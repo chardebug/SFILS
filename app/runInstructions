@@ -1,0 +1,14 @@
+Start your MySQL server and make sure the database is active.
+
+Confirm your project folder has app.py, config.py, and a templates folder with index.html.
+
+Be sure to check config.py! Config it! 
+
+Open a terminal and navigate to the project folder using cd.
+
+Run the app with python app.py (or your full Python path if needed).
+
+Open a browser and go to http://localhost:5000.
+
+Use the form to enter a record ID and a new checkout total, then click update.
+
