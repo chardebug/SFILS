@@ -1,0 +1,7 @@
+How to run: 
+
+Please simply paste the code into mySQL Workbench. Highlight all the code and press CTRL+SHIFT+ENTER to create the database. 
+If it's been already created, ignore that command and query the SELECT * FROM SF_Library_Data; 
+
+You might have to place the files into your C:/ProgramData/MySQL/MySQL Server 9.5/Uploads. Check out scripts for those. 
+I had a lot of issues, so this was my method. If you have a better way, definitely do that! 
