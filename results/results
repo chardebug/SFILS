@@ -1,0 +1,15 @@
+I won't lie and say that I did a wonderful job. I probably butchered this project and could've done better. I was able to do a sketch on paper,
+but implementing this was a nightmare... Let's just say... I suck at SQL, and I want to improve this project. I looked at my table and know...
+this is something... no comment lulz. 
+
+However, here are my findings: 
+
+When I reviewed the data, I realized there were a lot of mistakes, repeats, or weird things. For example, some patrons were classified as 
+"Juvenile" yet were over 70 years old. Furthermore, there were a lot of empty or null entries, so it was important in the code to make sure it was either
+read properly or not. Furthermore, there were a lot of patron types! Wow. 
+
+After running and checking my table, I saw that one patron had a checkout total of 34834. They first registered in 2003. Another patron
+registered in 2003 as well, and they had a checkout total of 21304! Their renewal total was 5177. Not surprisingly, some patrons have never 
+checked out a book. For example, one person was registered in 2013 and yet has checked out nothing. 
+
+There were over 400,000+ records, which is a lot of data. So, I am very much impressed and intrigued by this. 
