@@ -14,14 +14,14 @@ I inserted a lot of the data into the tables, such as the library codes, to ensu
 What I found most difficult was the age and roles being tied together. Therefore, I don't feel too successful in the way I arranged things, but it looks prettier than my last attempt.
 
 # Future Improvements and Wishes
-- Better organization (SQL)
-- Prettier app
+- Better organization (SQL in general)
+- Prettier app (More options, profiles, avatars, etc.)
 - Improve role_id, age_range_label, age_id, etc.
-- Minimize null values
-- Polish mistakes in .csv file
+- Minimize null values/blank entries
+- Polish mistakes in the .csv file. A 70+ year old juvenile...? Heh. Odd. 
 
-  # Reflection
-  The first time I submitted this, I rushed to get it done. I went to bed that night feeling ashamed. Wow, I really uploaded that onto GitHub! My SQL database was a total mess. I decided
-  to take the penalty and go back. I had to redo it! Therefore, I spent the whole day redoing it. Do I feel better? Tremendously. I have also learned a lot. SQL is no joke, at times. I had
-  some fits of rage (I get ragebaited easily). But, I feel proud that I decided to try again. I learned so much! I am more proud of the work I've done, and I hope people can see it. I am
-  inspired to do more database practice. This was quite fun, but I MUST say... maybe I should manage my time better! 
+# Reflection
+The first time I submitted this, I rushed to get it done. I went to bed that night feeling ashamed. Wow, I really uploaded that onto GitHub! My SQL database was a total mess. I decided
+to take the penalty and go back. I had to redo it! Therefore, I spent the whole day redoing it. Do I feel better? Tremendously. I have also learned a lot. SQL is no joke, at times. I had
+ some fits of rage (I get ragebaited easily). But, I feel proud that I decided to try again. I learned so much! I am more proud of the work I've done, and I hope people can see it. I am
+inspired to do more database practice. This was quite fun, but I MUST say... maybe I should manage my time better! 
