@@ -48,14 +48,17 @@ This is meant to be a more manageable database with multiple tables. We are not 
 
 # Most checkouts
 patron_id, checkout_total, renewal_total, year_patron_registered
+
 '364974', '45380', '143', '2', 2003
 
 # Earliest account
 patron_id, year_patron_registered
+
 '571', 2003
 
 # Most renewals
 patron_id, renewal_total
+
 '47483', '11321'
 
 
