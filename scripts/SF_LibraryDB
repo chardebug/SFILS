@@ -1,313 +1,227 @@
 CREATE DATABASE SF_LibraryDB;
 USE SF_LibraryDB;
 
-
-CREATE TABLE libraryLookup (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    home_library_code VARCHAR(15) NOT NULL,
-    home_library_definition VARCHAR(50) NOT NULL, 
-    within_sf_county BOOLEAN NULL
+-- Age Range Lookup Table
+CREATE TABLE ageRange (
+    age_id INT PRIMARY KEY,
+    min_age INT NULL,
+    max_age INT,
+    age_group VARCHAR(20) NOT NULL,
+    age_range_label VARCHAR(30) NOT NULL
 );
 
+INSERT INTO ageRange (age_id, min_age, max_age, age_group, age_range_label)
+VALUES 
+(-1, NULL, NULL, 'None', 'No Age Group'),
+(0, 0, 9, 'Juvenile', '0 to 9 years'),
+(1, 10, 19, 'Teen', '10 to 19 years'),
+(2, 20, 59, 'Adult', '20 to 59 years'),
+(3, 60, 64, 'Adult', '60 to 64 years'),
+(4, 65, NULL, 'Senior', '65+');
 
-CREATE TABLE notificationLookup (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    notification_code VARCHAR(15),
-    notification_definition VARCHAR(50) NOT NULL,
-    provided_email_address BOOLEAN NULL
+-- Role Lookup Table
+CREATE TABLE roleType (
+    role_id INT PRIMARY KEY,
+    role_name VARCHAR(50) NOT NULL
 );
 
+INSERT INTO roleType (role_id, role_name)
+VALUES 
+(-1, 'None'),
+(4, 'Welcome'),
+(5, 'Staff'),
+(10, 'Visitor'),
+(11, 'Business'),
+(12, 'Library By Mail'),
+(15, 'Teacher Card'),
+(16, 'Digital Access Commons'),
+(17, 'Bibliocommons'),
+(55, 'Retired Staff'),
+(100, 'At User');
 
-CREATE TABLE patronLookup (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    patron_type_code VARCHAR(15),
-    patron_type_definition VARCHAR(50) NOT NULL,
-    age_min TINYINT NULL,
-    age_max TINYINT NULL
+-- Patron Type Lookup Table
+CREATE TABLE patronType (
+  patron_type_code SMALLINT PRIMARY KEY,
+  patron_type_definition VARCHAR(50) NOT NULL,
+  age_id INT NULL,                 
+  role_id INT NULL,                
+  FOREIGN KEY (age_id) REFERENCES ageRange(age_id),
+  FOREIGN KEY (role_id) REFERENCES roleType(role_id)
 );
 
+INSERT INTO patronType (patron_type_code, patron_type_definition, age_id, role_id)
+VALUES
+(0, 'Adult', 2, -1),
+(1, 'Juvenile', 0, -1),
+(2, 'Teen', 1, -1),
+(3, 'Senior', 4, -1),
+(4, 'Welcome', -1, 4),
+(5, 'Staff', -1, 5),
+(10, 'Visitor', -1, 10),
+(11, 'Business', -1, 11),
+(12, 'Library By Mail', -1, 12),
+(15, 'Teacher Card', -1, 15),
+(16, 'Digital Access Card', -1, 16),
+(17, 'Bibliocommons', -1, 17),
+(55, 'Retired Staff', -1, 55),
+(100, 'At User Adult', 2, 100),
+(101, 'At User Juvenile', 0, 100),
+(102, 'At User Teen', 1, 100),
+(103, 'At User Senior', 4, 100),
+(104, 'At User Welcome', -1, 100);
 
-CREATE TABLE SF_Library_Data_staging (
-    patron_type_code VARCHAR(15),
+-- Library Definition Lookup Table 
+CREATE TABLE libraryType (
+    home_library_code VARCHAR(10) PRIMARY KEY,
+    home_library_definition VARCHAR(50)
+);
+
+-- Notification Code Lookup Table 
+CREATE TABLE notificationType (
+    notification_medium_code VARCHAR(10) PRIMARY KEY NOT NULL,
+    notification_code_definition VARCHAR(20) NOT NULL
+);
+
+INSERT INTO notificationType (notification_medium_code, notification_code_definition)
+VALUES
+('z', 'Email'),
+('-', 'None'),
+('p', 'Phone'),
+('a', 'Print');
+
+-- Patron Table 
+CREATE TABLE patron (
+    patron_id INT PRIMARY KEY AUTO_INCREMENT,
+    patron_type_code INT,
     checkout_total INT,
     renewal_total INT,
-    home_library_code VARCHAR(15),
-    circulation_active_month TINYINT,
-    circulation_active_year SMALLINT,
-    notification_code VARCHAR(15),
-    provided_email_address BOOLEAN,
-    year_patron_registered SMALLINT
+    age_id INT NULL,
+    role_id INT NULL,
+    home_library_code VARCHAR(10) NULL,
+    home_library_definition VARCHAR(50) NULL,
+    within_sf_county TINYINT(1),
+    provided_email_address TINYINT(1),
+    circulation_active_month INT NULL,
+    circulation_active_year VARCHAR(20) NULL,
+    year_patron_registered YEAR,
+    notification_medium_code VARCHAR(10) NULL,
+    notification_code_definition VARCHAR(20) NULL
 );
 
-
-CREATE TABLE SF_Library_Data (
-    record_id INT AUTO_INCREMENT PRIMARY KEY,
-    patron_type_code VARCHAR(15),
-    checkout_total INT,
+-- Staging Table for Raw Import 
+CREATE TABLE patronStaging (
+    patron_type_code INT, 
+    patron_type_definition VARCHAR(20), 
+    checkout_total INT, 
     renewal_total INT,
+    age_range VARCHAR(50),
     home_library_code VARCHAR(15),
-    circulation_active_month TINYINT,
-    circulation_active_year SMALLINT,
-    notification_code VARCHAR(15),
+    home_library_definition VARCHAR(50),
+    circulation_active_month VARCHAR(50) NULL, 
+    circulation_active_year YEAR,
+    notification_medium_code VARCHAR(20),
+    notification_code_definition VARCHAR(20),
     provided_email_address BOOLEAN,
-    year_patron_registered SMALLINT
+    within_sf_county BOOLEAN,
+    year_patron_registered YEAR
 );
 
-
-LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 9.5/Uploads/libraryLookup.csv' 
-INTO TABLE libraryLookup
+-- Load CSV into Staging Table
+LOAD DATA LOCAL INFILE 'C:/ProgramData/MYSQL/MySQL Server 9.5/Uploads/SFPL_Data.csv'
+INTO TABLE patronStaging
 FIELDS TERMINATED BY ',' 
+ENCLOSED BY '"'
 LINES TERMINATED BY '\r\n'
 IGNORE 1 ROWS
-(home_library_code, home_library_definition, @within_sf_county)
-SET within_sf_county = NULLIF(@within_sf_county, '');
+(patron_type_code, patron_type_definition, checkout_total, renewal_total,
+ age_range, home_library_code, home_library_definition,
+ circulation_active_month, circulation_active_year,
+ notification_medium_code, notification_code_definition,
+ provided_email_address, within_sf_county, year_patron_registered);
 
-LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 9.5/Uploads/notificationLookup.csv'
-INTO TABLE notificationLookup
-FIELDS TERMINATED BY ',' 
-LINES TERMINATED BY '\r\n'
-IGNORE 1 ROWS
-(notification_code, notification_definition, @provided_email_address)
-SET provided_email_address = NULLIF(@provided_email_address, '');
-
-LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 9.5/Uploads/patronLookupCleaned.csv'
-INTO TABLE patronLookup
-FIELDS TERMINATED BY ',' 
-LINES TERMINATED BY '\r\n'
-IGNORE 1 ROWS
-(patron_type_code, patron_type_definition, age_min, age_max);
-
-CREATE TABLE SF_Library_Data_staging (
-    patron_type_code VARCHAR(15),
-    checkout_total INT,
-    renewal_total INT,
-    home_library_code VARCHAR(15),
-    circulation_active_month TINYINT,
-    circulation_active_year SMALLINT,
-    notification_code VARCHAR(15),
-    provided_email_address BOOLEAN,
-    year_patron_registered SMALLINT
-);
-
-CREATE TABLE SF_Library_Data (
-    record_id INT AUTO_INCREMENT PRIMARY KEY,
-    patron_type_code VARCHAR(15),
-    checkout_total INT,
-    renewal_total INT,
-    home_library_code VARCHAR(15),
-    circulation_active_month TINYINT,
-    circulation_active_year SMALLINT,
-    notification_code VARCHAR(15),
-    provided_email_address BOOLEAN,
-    year_patron_registered SMALLINT
-);
-
-LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 9.5/Uploads/SFPL_Data.csv'
-INTO TABLE SF_Library_Data_staging
-FIELDS TERMINATED BY ',' 
-LINES TERMINATED BY '\r\n'
-IGNORE 1 ROWS
-(
-  patron_type_code, 
-  checkout_total, 
-  renewal_total, 
-  home_library_code, 
-  @circulation_active_month,
-  @circulation_active_year,
-  notification_code, 
-  @provided_email_address,
-  year_patron_registered
+-- Insert into Patron Table
+INSERT INTO patron (
+  patron_type_code,
+  checkout_total,
+  renewal_total,
+  age_id,
+  role_id,
+  home_library_code,
+  home_library_definition,
+  within_sf_county,
+  provided_email_address,
+  circulation_active_month,
+  circulation_active_year,
+  year_patron_registered,
+  notification_medium_code,
+  notification_code_definition
 )
-SET 
-  circulation_active_month = CASE @circulation_active_month
-        WHEN 'January' THEN 1
-        WHEN 'February' THEN 2
-        WHEN 'March' THEN 3
-        WHEN 'April' THEN 4
-        WHEN 'May' THEN 5
-        WHEN 'June' THEN 6
-        WHEN 'July' THEN 7
-        WHEN 'August' THEN 8
-        WHEN 'September' THEN 9
-        WHEN 'October' THEN 10
-        WHEN 'November' THEN 11
-        WHEN 'December' THEN 12
-        ELSE NULL
-    END,
-  circulation_active_year = NULLIF(@circulation_active_year, 'NULL'),
-  provided_email_address = NULLIF(@provided_email_address, 'NULL');
-
-
--- Kept getting timed out, so I had to do batches. 
-
--- Batch 1
-INSERT INTO SF_Library_Data
-(patron_type_code, checkout_total, renewal_total, home_library_code,
- circulation_active_month, circulation_active_year, notification_code, provided_email_address, year_patron_registered)
 SELECT
-  patron_type_code,
-  checkout_total,
-  renewal_total,
-  home_library_code,
-  circulation_active_month,
-  circulation_active_year,
-  notification_code,
-  provided_email_address,
-  year_patron_registered
-FROM SF_Library_Data_staging
-LIMIT 50000 OFFSET 0;
+  ps.patron_type_code,
+  ps.checkout_total,
+  ps.renewal_total,
+  CASE
+    WHEN pt.age_id = -1 OR pt.age_id IS NULL THEN ar.age_id
+    ELSE pt.age_id
+  END AS age_id,
+  pt.role_id,
+  ps.home_library_code,
+  ps.home_library_definition,
+  ps.within_sf_county,
+  ps.provided_email_address,
+  CASE ps.circulation_active_month
+    WHEN 'January' THEN 1 WHEN 'February' THEN 2 WHEN 'March' THEN 3
+    WHEN 'April' THEN 4 WHEN 'May' THEN 5 WHEN 'June' THEN 6
+    WHEN 'July' THEN 7 WHEN 'August' THEN 8 WHEN 'September' THEN 9
+    WHEN 'October' THEN 10 WHEN 'November' THEN 11 WHEN 'December' THEN 12
+    ELSE NULL
+  END,
+  ps.circulation_active_year,
+  ps.year_patron_registered,
+  ps.notification_medium_code,
+  ps.notification_code_definition
+FROM patronStaging ps
+LEFT JOIN ageRange ar ON ps.age_range = ar.age_range_label
+LEFT JOIN patronType pt ON ps.patron_type_code = pt.patron_type_code;
 
--- Batch 2
-INSERT INTO SF_Library_Data
-(patron_type_code, checkout_total, renewal_total, home_library_code,
- circulation_active_month, circulation_active_year, notification_code, provided_email_address, year_patron_registered)
+-- Output
 SELECT
-  patron_type_code,
-  checkout_total,
-  renewal_total,
-  home_library_code,
-  circulation_active_month,
-  circulation_active_year,
-  notification_code,
-  provided_email_address,
-  year_patron_registered
-FROM SF_Library_Data_staging
-LIMIT 50000 OFFSET 50000;
-
--- Batch 3
-INSERT INTO SF_Library_Data
-(patron_type_code, checkout_total, renewal_total, home_library_code,
- circulation_active_month, circulation_active_year, notification_code, provided_email_address, year_patron_registered)
-SELECT
-  patron_type_code,
-  checkout_total,
-  renewal_total,
-  home_library_code,
-  circulation_active_month,
-  circulation_active_year,
-  notification_code,
-  provided_email_address,
-  year_patron_registered
-FROM SF_Library_Data_staging
-LIMIT 50000 OFFSET 100000;
-
--- Batch 4
-INSERT INTO SF_Library_Data
-(patron_type_code, checkout_total, renewal_total, home_library_code,
- circulation_active_month, circulation_active_year, notification_code, provided_email_address, year_patron_registered)
-SELECT
-  patron_type_code,
-  checkout_total,
-  renewal_total,
-  home_library_code,
-  circulation_active_month,
-  circulation_active_year,
-  notification_code,
-  provided_email_address,
-  year_patron_registered
-FROM SF_Library_Data_staging
-LIMIT 50000 OFFSET 150000;
-
--- Batch 5
-INSERT INTO SF_Library_Data
-(patron_type_code, checkout_total, renewal_total, home_library_code,
- circulation_active_month, circulation_active_year, notification_code, provided_email_address, year_patron_registered)
-SELECT
-  patron_type_code,
-  checkout_total,
-  renewal_total,
-  home_library_code,
-  circulation_active_month,
-  circulation_active_year,
-  notification_code,
-  provided_email_address,
-  year_patron_registered
-FROM SF_Library_Data_staging
-LIMIT 50000 OFFSET 200000;
-
--- Batch 6
-INSERT INTO SF_Library_Data
-(patron_type_code, checkout_total, renewal_total, home_library_code,
- circulation_active_month, circulation_active_year, notification_code, provided_email_address, year_patron_registered)
-SELECT
-  patron_type_code,
-  checkout_total,
-  renewal_total,
-  home_library_code,
-  circulation_active_month,
-  circulation_active_year,
-  notification_code,
-  provided_email_address,
-  year_patron_registered
-FROM SF_Library_Data_staging
-LIMIT 50000 OFFSET 250000;
-
--- Batch 7
-INSERT INTO SF_Library_Data
-(patron_type_code, checkout_total, renewal_total, home_library_code,
- circulation_active_month, circulation_active_year, notification_code, provided_email_address, year_patron_registered)
-SELECT
-  patron_type_code,
-  checkout_total,
-  renewal_total,
-  home_library_code,
-  circulation_active_month,
-  circulation_active_year,
-  notification_code,
-  provided_email_address,
-  year_patron_registered
-FROM SF_Library_Data_staging
-LIMIT 50000 OFFSET 300000;
-
--- Batch 8
-INSERT INTO SF_Library_Data
-(patron_type_code, checkout_total, renewal_total, home_library_code,
- circulation_active_month, circulation_active_year, notification_code, provided_email_address, year_patron_registered)
-SELECT
-  patron_type_code,
-  checkout_total,
-  renewal_total,
-  home_library_code,
-  circulation_active_month,
-  circulation_active_year,
-  notification_code,
-  provided_email_address,
-  year_patron_registered
-FROM SF_Library_Data_staging
-LIMIT 50000 OFFSET 350000;
-
--- Batch 9
-INSERT INTO SF_Library_Data
-(patron_type_code, checkout_total, renewal_total, home_library_code,
- circulation_active_month, circulation_active_year, notification_code, provided_email_address, year_patron_registered)
-SELECT
-  patron_type_code,
-  checkout_total,
-  renewal_total,
-  home_library_code,
-  circulation_active_month,
-  circulation_active_year,
-  notification_code,
-  provided_email_address,
-  year_patron_registered
-FROM SF_Library_Data_staging
-LIMIT 50000 OFFSET 400000;
-
--- Batch 10
-INSERT INTO SF_Library_Data
-(patron_type_code, checkout_total, renewal_total, home_library_code,
- circulation_active_month, circulation_active_year, notification_code, provided_email_address, year_patron_registered)
-SELECT
-  patron_type_code,
-  checkout_total,
-  renewal_total,
-  home_library_code,
-  circulation_active_month,
-  circulation_active_year,
-  notification_code,
-  provided_email_address,
-  year_patron_registered
-FROM SF_Library_Data_staging
-LIMIT 50000 OFFSET 450000;
-
-SELECT * FROM SF_Library_Data;
+  p.patron_id,
+  p.patron_type_code,
+  p.checkout_total,
+  p.renewal_total,
+  p.age_id,
+  ar.age_group,
+  ar.age_range_label,
+  p.role_id,
+  rt.role_name,
+  pt.patron_type_definition,
+  p.home_library_code,
+  p.home_library_definition,
+  CASE p.within_sf_county WHEN 1 THEN 'TRUE' ELSE 'FALSE' END AS within_sf_county,
+  CASE p.provided_email_address WHEN 1 THEN 'TRUE' ELSE 'FALSE' END AS provided_email_address,
+  CASE p.circulation_active_month
+    WHEN 1 THEN 'January'
+    WHEN 2 THEN 'February'
+    WHEN 3 THEN 'March'
+    WHEN 4 THEN 'April'
+    WHEN 5 THEN 'May'
+    WHEN 6 THEN 'June'
+    WHEN 7 THEN 'July'
+    WHEN 8 THEN 'August'
+    WHEN 9 THEN 'September'
+    WHEN 10 THEN 'October'
+    WHEN 11 THEN 'November'
+    WHEN 12 THEN 'December'
+    ELSE 'Unknown'
+  END AS circulation_active_month,
+  p.circulation_active_year,
+  p.year_patron_registered,
+  p.notification_medium_code,
+  p.notification_code_definition
+FROM patron p
+LEFT JOIN ageRange ar ON p.age_id = ar.age_id
+LEFT JOIN roleType rt ON p.role_id = rt.role_id
+LEFT JOIN patronType pt ON p.patron_type_code = pt.patron_type_code
+ORDER BY p.patron_id
+LIMIT 500000;
