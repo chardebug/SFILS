@@ -28,7 +28,7 @@ db.Patron.updateMany({}, [
             { case: { $eq: ["$patron_type_code", 11] }, then: "Business" },
             { case: { $eq: ["$patron_type_code", 12] }, then: "Library By Mail" },
             { case: { $eq: ["$patron_type_code", 15] }, then: "Teacher Card" },
-            { case: { $eq: ["$patron_type_code", 16] }, then: "Digital Access Commons" },
+            { case: { $eq: ["$patron_type_code", 16] }, then: "Digital Access Card" },
             { case: { $eq: ["$patron_type_code", 17] }, then: "Bibliocommons" },
             { case: { $eq: ["$patron_type_code", 55] }, then: "Retired Staff" },
             { case: { $eq: ["$patron_type_code", 100] }, then: "At User Adult" },
