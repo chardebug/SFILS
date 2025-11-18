@@ -3,7 +3,7 @@ db.Patron.distinct("age_range")
 
 // Label patrons as Juvenile, Teen, Adult, or Senior
 db.Patron.updateMany(
-  {},  // Apply to all documents
+  {}, 
   [
     { 
       $set: {
