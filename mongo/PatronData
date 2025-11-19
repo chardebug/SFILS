@@ -1,4 +1,4 @@
-// Total checkouts based on roles
+// Total checkouts based on membership type
 db.Patron.aggregate([
   {
     $group: {
