@@ -4,8 +4,12 @@ This app allows you to search for a patron via patron ID, age group, membership 
 ![Screenshot of App](app.png)
 
 # Features
-This app allows you to organize your results by patron ID ascending/descending, checkout total ascending/descending, or renewal total ascending/descending. 
- 
+This app allows you to sort your results by patron ID ascending/descending, checkout total ascending/descending, or renewal total ascending/descending. 
+
+![Screenshot of sorting](example1.png)
+![Screenshot of sorting](example2.png)
+![Screenshot of sorting](example3.png)
+
  If you use the search bar:
   - You can only search a patron's ID. This ID is from MongoDB's object ID.
   - The object ID has been shortened (8 characters) for easy searching.
