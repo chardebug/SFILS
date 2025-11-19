@@ -1,33 +1,36 @@
 # App Description
-This app allows you to search for a patron via patron ID, age group, membership type, active month, or library.  
+You can search for patrons using their ID, age group, membership type, active month, or library.
 
 ![Screenshot of App](app.png)
 
 # Features
-This app allows you to sort your results by patron ID ascending/descending, checkout total ascending/descending, or renewal total ascending/descending. 
+You can sort patron results by ID, checkout totals, or renewal totals in ascending or descending order.
 
-## Sorted by descending checkout total
+## Sorted by Descending Checkout Total
+
 ![Screenshot of sorting](example1.png)
 
-## Sorted by descending patron ID
+## Sorted by Descending Patron ID
+
 ![Screenshot of sorting](example2.png)
 
-## Sorted by ascending renewal total
+## Sorted by Ascending Renewal Total
+
 ![Screenshot of sorting](example3.png)
 
  If you use the search bar:
   - You can only search a patron's ID. This ID is from MongoDB's object ID.
-  - The object ID has been shortened (8 characters) for easy searching.
-  - Press "Clear" to return to the home page or the "Back to Home Page" button.
+  - The object ID has been shortened to the last 8 characters for easy searching.
+  - To reset, press "Clear" or use the "Back to Home Page" button.
 
- If you use the dropdown box,
-  - You can select your desired search queries.
-  - The search will look for any patrons that fit the search query.
+ If you use the dropdown boxes:
+  - You can select your desired search query.
+  - The app will return all patrons that match your selection.
       - e.g., Adult, March, Anza
-  -  Press "Clear" to return or the "Back to Home Page" button.
+  -  To reset, "Clear" or use the "Back to Home Page" button.
 
 # Profile 
-Each patron has a profile that includes the following information:
+Each patron has a profile that includes the following details:
   - Patron ID
   - Checkout Total
   - Renewal Total
