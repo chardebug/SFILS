@@ -54,7 +54,11 @@ To organize the age groups, I first determined all the distinct age ranges by us
     55 to 59 years
     60 to 64 years
 
-If a patron’s age range matched one of these values, they received the “Adult” label. You could imagine how messy this was in MySQL. To classify patrons as the "Adult" label, I had to define a minimum age of 20 and a maximum age of 64. If a patron’s age range fell within those bounds, they were labeled “Adult.” In theory, that should have worked, but then came the “At User” patrons. They were a special case, requiring both a role and an age range. Remember, I tried separating patrons by either age or special role. This was a great improvement! In my previous project, one tricky edge case was that a patron could be classified as a teacher, yet MySQL would still assign their age as “Unknown.” I also wanted to correct any errors in the data (such as a 70-year-old Juvenile?!). Best of all, I introduced membership types to replace roles. Now, each patron is linked directly to a specific type of membership card. For example, an adult patron might have a profile like this: 
+If a patron’s age range matched one of these values, they received the “Adult” label. 
+
+You could imagine how messy this was in MySQL. To classify patrons as the "Adult" label, I had to define a minimum age of 20 and a maximum age of 64. If a patron’s age range fell within those bounds, they were labeled “Adult.” In theory, that should have worked, but then came the “At User” patrons. They were a special case, requiring both a role and an age range. Remember, I tried separating patrons by either age or special role. 
+
+So with these changes...this was a great improvement! In my previous project, one tricky edge case was that a patron could be classified as a teacher, yet MySQL would still assign their age as “Unknown.” I also wanted to correct any errors in the data (such as a 70-year-old Juvenile?!). Best of all, I introduced membership types to replace roles. Now, each patron is linked directly to a specific type of membership card. For example, an adult patron might have a profile like this: 
 
 ### Old Profile Example #1
     Age Group: Adult
