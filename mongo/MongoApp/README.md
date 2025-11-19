@@ -1,3 +1,16 @@
+# Running the App
+1. Ensure your MongoDB database has been established and is running.
+2. Download the `SFILS` folder from GitHub.
+3. Extract the ZIP file to your desktop.
+4. After extracting the ZIP file, open Command Prompt.
+5. Navigate to the `MongoApp` folder inside the extracted project:
+   ```bash
+   cd "C:\Users\<YourUsername>\Desktop\SFILS-main\SFILS-main\mongo\MongoApp"
+6. Run the command:
+   ```bash
+   python app.py
+7. In your web browser, paste http://127.0.0.1:5000/patrons into your address bar.
+   
 # App Description
 You can search for patrons using their ID, age group, membership type, active month, or library.
 
