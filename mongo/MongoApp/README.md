@@ -6,8 +6,13 @@ This app allows you to search for a patron via patron ID, age group, membership 
 # Features
 This app allows you to sort your results by patron ID ascending/descending, checkout total ascending/descending, or renewal total ascending/descending. 
 
+## Sorted by descending checkout total
 ![Screenshot of sorting](example1.png)
+
+## Sorted by descending patron ID
 ![Screenshot of sorting](example2.png)
+
+## Sorted by ascending renewal total
 ![Screenshot of sorting](example3.png)
 
  If you use the search bar:
