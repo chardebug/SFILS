@@ -23,6 +23,18 @@ db.Patron.updateMany(
   ]
 )
 
+// Renaming "Teacher Card" patron type to "Teacher" for consistency
+db.Patron.updateMany(
+  { patron_type_definition: "Teacher Card" },
+  [
+    {
+      $set: {
+        patron_type_definition: "Teacher"
+      }
+    }
+  ]
+)
+
 // Label patrons by membership type
 db.Patron.updateMany({}, [
   {
