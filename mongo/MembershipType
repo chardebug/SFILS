@@ -11,7 +11,19 @@ db.Patron.aggregate([
   { $sort: { "_id.patron_type_code": 1 } }
 ])
 
-// Label patrons by their code number
+// Renaming "Digital Access Card" patron type to "Digital Access" for consistency
+db.Patron.updateMany(
+  { patron_type_definition: "Digital Access Card" }, 
+  [
+    {
+      $set: {
+        patron_type_definition: "Digital Access"
+      }
+    }
+  ]
+)
+
+// Label patrons by membership type
 db.Patron.updateMany({}, [
   {
     $set: {
@@ -44,7 +56,7 @@ db.Patron.updateMany({}, [
   }
 ])
 
-// Count how many patrons per group
+// Count how many patrons per membership type
 db.Patron.aggregate([
   { $group: { _id: "$role_name", count: { $sum: 1 } } },
   { $sort: { count: -1 } }
