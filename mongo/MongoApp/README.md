@@ -1,6 +1,8 @@
 # App Description
 This app allows you to search for a patron via patron ID, age group, membership type, active month, or library.  
 
+![Screenshot of App](app.png)
+
 # Features
 This app allows you to organize your results by patron ID ascending/descending, checkout total ascending/descending, or renewal total ascending/descending. 
  
@@ -32,3 +34,6 @@ Each patron has a profile that includes the following information:
   - Notification Definition
   - Circulation Active Month
   - Provided Email Address (yes/no)
+
+![Screenshot of Sample Profile](profile.png)
+
