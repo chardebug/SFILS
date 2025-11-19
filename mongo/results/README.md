@@ -36,4 +36,14 @@
     - Highest total checkouts: 22,474
     - Highest total renewals:  11,321
 
+# Runtime Stats
+  - Query execution time for Adult records: 381 ms (271,588 records)
+
+# Reflection
+After learning from my old mistakes, I started this project early and got better results. In general, MongoDB was more user-friendly compared to MySQL. I didn't have too many problems, other than having to research how to query searches. One thing I enjoyed about MongoDB was how easy importing a CSV file was. With MySQL, I encountered many problems. However, for this project, the file was uploaded within seconds. MongoDB is also intuitive and can determine data types correctly (usually). I found MongoDB fun and thought it was organized better than MySQL. 
+
+Overall, I learned how to use MongoDB, which was a very rewarding experience. I also got to learn new app-building skills. MongoDB has helped me appreciate databases. 
+
+  
+
    
