@@ -18,10 +18,10 @@ db.Patron.updateMany({}, [
       role_name: {
         $switch: {
           branches: [
-            { case: { $eq: ["$patron_type_code", 0] }, then: "Adult" },
-            { case: { $eq: ["$patron_type_code", 1] }, then: "Juvenile" },
-            { case: { $eq: ["$patron_type_code", 2] }, then: "Teen" },
-            { case: { $eq: ["$patron_type_code", 3] }, then: "Senior" },
+            { case: { $eq: ["$patron_type_code", 0] }, then: "Adult Classic" },
+            { case: { $eq: ["$patron_type_code", 1] }, then: "Juvenile Classic" },
+            { case: { $eq: ["$patron_type_code", 2] }, then: "Teen Classic" },
+            { case: { $eq: ["$patron_type_code", 3] }, then: "Senior Classic" },
             { case: { $eq: ["$patron_type_code", 4] }, then: "Welcome" },
             { case: { $eq: ["$patron_type_code", 5] }, then: "Staff" },
             { case: { $eq: ["$patron_type_code", 10] }, then: "Visitor" },
